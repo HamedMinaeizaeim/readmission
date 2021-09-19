@@ -348,6 +348,7 @@ class ReAdmissionDataWrangling:
         self.apply_discharge_disposal()
         self.apply_admission_type()
         self.drop_expired_patients()
+        self.write_initial_assessment_to_files()
 
         column_lists = ['diag_1', 'diag_2', 'diag_3', 'weight', 'admission_source_id', 'admission_type_id',
                        'discharge_disposition_id', 'encounter_id','patient_nbr', 'max_glu_serum', 'A1Cresult']
@@ -356,7 +357,6 @@ class ReAdmissionDataWrangling:
         # calculate Readmission
         # initial assessment
         readmission_rate = self.calculate_readdmission_rate()
-        self.write_initial_assessment_to_files()
         self.save_readmission_rate(output_folder_path, 'ReadmissionRate.xlsx')
 
         # self.replace_ehnicity_unkown()

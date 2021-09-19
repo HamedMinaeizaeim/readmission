@@ -1,6 +1,6 @@
-from ReAdmission_DataWrangling import ReAdmissionDataWrangling
-from Row_Data_Visulisation import RowDataVisulasion
-from MachineLearningModel import MachineLearningModel, MachineLearningVisulisation
+from Codes.ReAdmissionDataWrangling import ReAdmissionDataWrangling
+from Codes.RowDataVisulisation import RowDataVisulasion
+from Codes.MachineLearningModel import MachineLearningModel, MachineLearningVisulisation
 
 
 def run_data_wrangling_and_visualisation(inpout_folder, ouput_graphs_folder, is_run_data_wrangling=True,
@@ -46,17 +46,17 @@ def run_machine_learning_model(input_folder_Path, output_graphs_folder_path):
     calssification_visulise.plot_roc_curve()
 
 
-def main(input_folder_path, output_graphs_folder_path, is_run_data_wrangling=True,
-                                         is_run_data_visulsation= True):
-    run_data_wrangling_and_visualisation(input_folder_path, output_graphs_folder_path, False, False)
-    run_machine_learning_model()
+def main(input_folder_path, output_graphs_folder_path, is_run_data_wrangling=True, is_run_data_visulsation=True):
+    run_data_wrangling_and_visualisation(input_folder_path,
+                                         output_graphs_folder_path, is_run_data_wrangling, is_run_data_visulsation)
+    run_machine_learning_model(input_folder_path, output_graphs_folder_path)
 
 
 if __name__ == '__main__':
     input_folder_path = r'C:\Users\HamedM.MANAIA.000\Documents\readmission'
     output_graphs_folder_path = r'C:\Users\HamedM.MANAIA.000\Documents\readmission\New folder'
 
-    main(input_folder_path, output_graphs_folder_path, False, False)
+    main(input_folder_path, output_graphs_folder_path, True, True)
 
 
 

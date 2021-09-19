@@ -4,7 +4,7 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import seaborn as sns
-from ReAdmission_DataWrangling import ReAdmissionDataWrangling
+from Codes.ReAdmissionDataWrangling import ReAdmissionDataWrangling
 
 
 class RowDataVisulasion:
@@ -27,13 +27,13 @@ class RowDataVisulasion:
 
             plt.figure()
             rcParams.update({'figure.autolayout': True})
-            plt.bar(agg_value[columns[1]], agg_value['Rate'])
+            plt.bar(agg_value[columns[0]], agg_value['Rate'])
             value_mesaure_name = mesuare[:-4]
             plt.title(value_mesaure_name + ' rate per 1,000 population')
             plt.xlabel(value_mesaure_name)
             plt.xticks(rotation=90)
             plt.ylabel(value_mesaure_name + ' rate per 1,000 population')
-            plt.ylim(0, 500)
+            plt.ylim(0, 1000)
             plt.grid(True)
             file_path = os.path.join(self.folder_path, value_mesaure_name + ' rate.png')
             plt.savefig(file_path, bbox_inches='tight')
@@ -98,6 +98,8 @@ class RowDataVisulasion:
             _, ax = plt.subplots(2, 2, figsize=(20, 10))
             for index, num in enumerate(numerric):
                 sns.boxplot(x=par, y=num, hue="readmitted", data=self.dF, ax=ax[index // 2][index % 2])
+                ax[index // 2][index % 2].set_xticklabels(ax[index // 2][index % 2].get_xticklabels(), rotation=45,
+                                                          horizontalalignment='right')
             print(file_path)
             plt.savefig(file_path)
 

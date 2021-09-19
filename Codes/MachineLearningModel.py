@@ -17,7 +17,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, roc_auc_score
-import DataWranggling as DataWrang
 from sklearn.utils import resample
 from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score,f1_score, roc_curve
 from sklearn.metrics import confusion_matrix as cm
@@ -125,7 +124,7 @@ class MachineLearningModel:
         print('precision:.........................................{:.3f}'.format(precision))
         print('fscore:............................................{:.3f}'.format(fscore))
 
-    def run_evalaute_model(self, solver_model,model_abbre , thresh, printing=True):
+    def run_evalaute_model(self, solver_model, model_abbre, thresh, printing=True):
         X_train, X_test, y_train, y_test = self.split_trian_test_data()
         model = self.build_model(solver_model)
         y_train_preds = model.predict_proba(X_train)[:, 1]
@@ -165,7 +164,7 @@ class MachineLearningModel:
         self.test_eval['fpr'].append(fpr)
         self.test_eval['tpr'].append(tpr)
 
-        if print:
+        if printing:
             print('Model: Train.........{}'.format(solver_model))
             MachineLearningModel.print_evaluation(train_auc, train_accuracy, train_recall, train_precision, train_fscore)
             print('Model: Test.........{}'.format(solver_model))
@@ -211,7 +210,7 @@ class MachineLearningVisulisation(MachineLearningModel):
 
         sns.barplot(x='model', y='precision', hue='status', data=full_eval,  ax=axes[2])
         axes[2].set_xticklabels(axes[2].get_xticklabels(), rotation=45, horizontalalignment='right')
-        axes[1].set_title("precision")
+        axes[2].set_title("precision")
         plt.savefig(os.path.join(self.folder_path, 'Eval.png'))
         plt.show()
 
