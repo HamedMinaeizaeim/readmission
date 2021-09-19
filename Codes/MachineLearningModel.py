@@ -21,6 +21,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.utils import resample
 from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score,f1_score, roc_curve
 from sklearn.metrics import confusion_matrix as cm
+from Codes.feature_importance import FeatureImportance
 
 
 class MachineLearningModel:
@@ -65,8 +66,8 @@ class MachineLearningModel:
         df = self.resample_data_due_to_unbalance()
         columns = self.df.columns.tolist()
         columns.remove('readmitted')
-        x, y = df[columns].values, df['readmitted'].values
-        return df[columns].values, df['readmitted'].values
+        x, y = df[columns], df['readmitted']
+        return df[columns], df['readmitted']
 
     def split_trian_test_data(self):
         x, y = self.separate_featues_labels()
@@ -106,9 +107,9 @@ class MachineLearningModel:
         # Combine preprocessing steps
         preprocessor = ColumnTransformer(
             transformers=[
-                ('cat', categorical_transformer, categorical_features_index),
-                ('order', orderbased_transformer, orderbased_features_index),
-                ('number', numerical_transformer, numerical_features_index),
+                ('cat', categorical_transformer, categorical_features),
+                ('order', orderbased_transformer, orderbased_features),
+                ('number', numerical_transformer, numerical_features),
             ])
 
         pipeline = Pipeline(steps=[('preprocessor', preprocessor),
@@ -116,17 +117,8 @@ class MachineLearningModel:
 
         model = pipeline.fit(X_train, y_train)
 
-        #
-        # onehot_columns = \
-        # pipeline.named_steps['preprocessor'].named_transformers_['cat'].get_feature_names(input_features=categorical_features)
-        #
-        # # you can get the values transformed with your pipeline
-        # onehot_columns = \
-        # pipeline.named_steps['preprocessor'].named_transformers_['cat'].get_feature_names(input_features=categorical_features)
-        #
-        #
-        # feature_importance = pd.Series(data=pipeline.named_steps['classifier'].feature_importances_,
-        #                                index=np.array(numerical_columns + list(onehot_columns)))
+        feature_importances = FeatureImportance(model, True)
+        feature_importances.plot(top_n_features=20)
 
         return model
 
