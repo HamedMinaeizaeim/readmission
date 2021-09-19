@@ -11,6 +11,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 import xgboost as xgb
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
 from matplotlib import rcParams
 import seaborn as sns
 from sklearn.model_selection import train_test_split
@@ -77,7 +78,11 @@ class MachineLearningModel:
         categorical_features = ['ethnicity', 'gender', 'medical_specialty', 'diag_1_Cate', 'diag_2_Cate', 'diag_3_Cate',
                                 'admission_type',
                                 'discharge_disposition', 'admission_source']
+
         orderbased_features = ['insulin', 'medication_change', 'diabetesMed', 'age']
+
+        numerical_features = ['time_in_hospital', 'num_lab_procedures', 'num_procedures', 'num_medications',
+                     'number_outpatient', 'number_emergency', 'number_inpatient', 'number_diagnoses']
 
         X_train, X_test, y_train, y_test = self.split_trian_test_data()
 
@@ -86,6 +91,8 @@ class MachineLearningModel:
 
         categorical_features_index = [columns.index(category) for category in categorical_features]
         orderbased_features_index = [columns.index(order) for order in orderbased_features]
+        numerical_features_index  = [columns.index(order) for order in numerical_features]
+
 
         categorical_transformer = Pipeline(steps=[
             ('onehot', OneHotEncoder(handle_unknown='error'))])
@@ -93,16 +100,34 @@ class MachineLearningModel:
         orderbased_transformer = Pipeline(steps=[
             ('ordinal', OrdinalEncoder(handle_unknown='error'))])
 
+        numerical_transformer = Pipeline(steps=[
+            ('numerical', MinMaxScaler())])
+
         # Combine preprocessing steps
         preprocessor = ColumnTransformer(
             transformers=[
                 ('cat', categorical_transformer, categorical_features_index),
-                ('order', orderbased_transformer, orderbased_features_index)])
+                ('order', orderbased_transformer, orderbased_features_index),
+                ('number', numerical_transformer, numerical_features_index),
+            ])
 
         pipeline = Pipeline(steps=[('preprocessor', preprocessor),
                                    ('model', eval(solver_model))])
 
         model = pipeline.fit(X_train, y_train)
+
+        #
+        # onehot_columns = \
+        # pipeline.named_steps['preprocessor'].named_transformers_['cat'].get_feature_names(input_features=categorical_features)
+        #
+        # # you can get the values transformed with your pipeline
+        # onehot_columns = \
+        # pipeline.named_steps['preprocessor'].named_transformers_['cat'].get_feature_names(input_features=categorical_features)
+        #
+        #
+        # feature_importance = pd.Series(data=pipeline.named_steps['classifier'].feature_importances_,
+        #                                index=np.array(numerical_columns + list(onehot_columns)))
+
         return model
 
     @staticmethod

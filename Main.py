@@ -56,7 +56,7 @@ if __name__ == '__main__':
     input_folder_path = r'C:\Users\HamedM.MANAIA.000\Documents\readmission'
     output_graphs_folder_path = r'C:\Users\HamedM.MANAIA.000\Documents\readmission\New folder'
 
-    main(input_folder_path, output_graphs_folder_path, True, True)
+    main(input_folder_path, output_graphs_folder_path, False, False)
 
 
 

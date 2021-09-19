@@ -27,13 +27,13 @@ class RowDataVisulasion:
 
             plt.figure()
             rcParams.update({'figure.autolayout': True})
-            plt.bar(agg_value[columns[0]], agg_value['Rate'])
+            plt.barh(agg_value[columns[0]], agg_value['Rate'])
             value_mesaure_name = mesuare[:-4]
             plt.title(value_mesaure_name + ' rate per 1,000 population')
-            plt.xlabel(value_mesaure_name)
-            plt.xticks(rotation=90)
-            plt.ylabel(value_mesaure_name + ' rate per 1,000 population')
-            plt.ylim(0, 1000)
+            plt.ylabel(value_mesaure_name)
+            plt.xticks(rotation=45)
+            plt.xlabel(value_mesaure_name + ' rate per 1,000 population')
+            plt.xlim(0, 1000)
             plt.grid(True)
             file_path = os.path.join(self.folder_path, value_mesaure_name + ' rate.png')
             plt.savefig(file_path, bbox_inches='tight')
